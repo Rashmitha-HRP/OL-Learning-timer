@@ -10,13 +10,14 @@
         :root {
             --red: #ff3e3e;
             --bg: #050505;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 62, 62, 0.2);
+            --glass: rgba(255, 255, 255, 0.02);
+            --border: rgba(255, 62, 62, 0.15);
+            --dark-box: rgba(0, 0, 0, 0.6); /* වඩාත් අඳුරු කළ බොක්ස් */
         }
 
         body {
             background-color: var(--bg);
-            background-image: radial-gradient(circle at 50% 50%, #1a0808 0%, #050505 100%);
+            background-image: radial-gradient(circle at 50% 50%, #150505 0%, #050505 100%);
             color: white;
             font-family: 'Inter', sans-serif;
             margin: 0;
@@ -28,7 +29,7 @@
         }
 
         .header { text-align: center; margin-bottom: 40px; }
-        #current-time { font-size: 4rem; font-weight: 900; margin: 0; }
+        #current-time { font-size: 4rem; font-weight: 900; margin: 0; text-shadow: 0 0 20px rgba(255, 62, 62, 0.2); }
         #current-date { color: var(--red); font-weight: bold; text-transform: uppercase; letter-spacing: 4px; font-size: 0.9rem; }
 
         .dashboard-grid {
@@ -41,42 +42,54 @@
 
         .card {
             background: var(--glass);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
             border: 1px solid var(--border);
-            border-radius: 24px;
+            border-radius: 28px;
             padding: 25px;
             text-align: center;
-            transition: 0.3s;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .card:hover { border-color: var(--red); transform: translateY(-5px); }
+        .card:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255, 62, 62, 0.1); }
 
-        h2 { font-size: 0.9rem; color: var(--red); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        h2 { font-size: 0.8rem; color: var(--red); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 20px; opacity: 0.8; }
 
-        /* O/L COUNTDOWN */
-        .ol-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .ol-box { background: rgba(0,0,0,0.4); padding: 15px 5px; border-radius: 15px; border: 1px solid #222; }
-        .ol-num { font-size: 1.8rem; font-weight: 900; display: block; }
-        .ol-label { font-size: 0.6rem; color: #666; }
+        /* DARKER COUNTDOWN BOXES */
+        .ol-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .ol-box { 
+            background: var(--dark-box); 
+            padding: 18px 5px; 
+            border-radius: 18px; 
+            border: 1px solid #111; /* බොක්ස් එක වටේටත් අඳුරු බෝඩර් එකක් */
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+        }
+        .ol-num { font-size: 2rem; font-weight: 900; display: block; color: #fff; }
+        .ol-label { font-size: 0.6rem; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; display: block; }
 
         /* POMODORO */
-        #timer-display { font-size: 5.5rem; font-weight: 900; margin: 15px 0; color: var(--red); }
-        .btn-group { display: flex; gap: 10px; justify-content: center; }
+        #timer-display { font-size: 5.5rem; font-weight: 900; margin: 15px 0; color: var(--red); letter-spacing: -2px; }
+        .btn-group { display: flex; gap: 12px; justify-content: center; }
         button { 
-            background: var(--red); border: none; padding: 14px 30px; border-radius: 12px; 
-            color: white; font-weight: bold; cursor: pointer; transition: 0.2s;
+            background: var(--red); border: none; padding: 16px 32px; border-radius: 14px; 
+            color: white; font-weight: 900; cursor: pointer; transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 62, 62, 0.3);
         }
-        button.secondary { background: #1a1a1a; border: 1px solid #333; }
+        button.secondary { background: #111; border: 1px solid #222; box-shadow: none; }
+        
+        #status-text { font-weight: bold; font-size: 1rem; margin-top: 5px; text-transform: uppercase; letter-spacing: 2px; }
+        .status-work { color: var(--red); }
+        .status-break { color: #00ff88; }
 
-        /* TO-DO LIST */
-        .todo-input-wrap { display: flex; gap: 8px; margin-bottom: 15px; }
-        input { flex: 1; background: #111; border: 1px solid #333; padding: 12px; border-radius: 10px; color: white; outline: none; }
-        .todo-list { list-style: none; padding: 0; max-height: 180px; overflow-y: auto; text-align: left; }
-        .todo-item { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; }
+        /* MOTIVATION & MUSIC */
+        #quote-text { font-size: 1.1rem; line-height: 1.6; color: #ddd; min-height: 85px; display: flex; align-items: center; justify-content: center; padding: 0 10px; }
+        .music-btn { background: #111; border: 1px solid #222; padding: 14px; color: white; border-radius: 50px; cursor: pointer; width: 100%; font-weight: bold; }
+        .music-btn:hover { background: var(--red); border-color: var(--red); }
 
-        /* MOTIVATION */
-        #quote-text { font-style: italic; color: #ccc; min-height: 60px; font-size: 1rem; line-height: 1.4; display: flex; align-items: center; justify-content: center; }
+        /* TO-DO */
+        .todo-input-wrap { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { flex: 1; background: #0a0a0a; border: 1px solid #222; padding: 14px; border-radius: 12px; color: white; outline: none; }
+        .todo-item { background: rgba(255,255,255,0.02); padding: 12px; border-radius: 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #111; }
 
-        footer { margin-top: 50px; color: #444; font-weight: bold; font-size: 0.8rem; letter-spacing: 3px; }
+        footer { margin-top: 60px; color: #333; font-weight: bold; font-size: 0.75rem; letter-spacing: 5px; }
     </style>
 </head>
 <body>
@@ -99,33 +112,40 @@
 
         <div class="card" style="grid-row: span 2;">
             <h2>Focus Session</h2>
-            <div id="status-text" style="font-size: 0.7rem; color: #888;">TIME TO STUDY!</div>
+            <div id="status-text" class="status-work">WORK MODE</div>
             <div id="timer-display">25:00</div>
             <div class="btn-group">
-                <button onclick="toggleTimer()" id="start-btn">START</button>
+                <button onclick="toggleTimer()" id="start-btn">START SESSION</button>
                 <button class="secondary" onclick="resetTimer()">RESET</button>
             </div>
+            <audio id="alertSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
         </div>
 
         <div class="card">
-            <h2>Motivation</h2>
-            <p id="quote-text">"සූදානම් වීම ජයග්‍රහණයෙන් අඩකි."</p>
+            <h2>Daily Motivation</h2>
+            <div id="quote-text">"සාර්ථකත්වය යනු වැටෙන හැම වාරයකදීම නැවත නැගිටීමයි."</div>
+        </div>
+
+        <div class="card">
+            <h2>Study Ambience</h2>
+            <button class="music-btn" id="mBtn" onclick="toggleMusic()">▶ PLAY FOCUS LOFI</button>
+            <audio id="bgMusic" loop src="https://stream.zeno.fm/0r0xa792kwzuv"></audio>
         </div>
 
         <div class="card">
             <h2>Study Goals</h2>
             <div class="todo-input-wrap">
-                <input type="text" id="taskInput" placeholder="අලුත් ඉලක්කයක්...">
+                <input type="text" id="taskInput" placeholder="Add a study goal...">
                 <button onclick="addTask()">ADD</button>
             </div>
-            <div class="todo-list" id="todoList"></div>
+            <div id="todoList"></div>
         </div>
     </div>
 
     <footer>© COPYRIGHT Rashmitha EDITZ</footer>
 
     <script>
-        // LIVE CLOCK
+        // CLOCK
         function clock() {
             const now = new Date();
             document.getElementById("current-time").innerText = now.toLocaleTimeString('en-US', { hour12: false });
@@ -133,7 +153,7 @@
         }
         setInterval(clock, 1000); clock();
 
-        // O/L COUNTDOWN
+        // COUNTDOWN
         const target = new Date("December 8, 2026 08:30:00").getTime();
         setInterval(() => {
             const diff = target - new Date().getTime();
@@ -143,74 +163,80 @@
             document.getElementById("s").innerText = Math.floor((diff % (1000 * 60)) / 1000);
         }, 1000);
 
-        // MOTIVATION QUOTES
+        // MUSIC
+        const music = document.getElementById("bgMusic");
+        function toggleMusic() {
+            if (music.paused) { music.play(); document.getElementById("mBtn").innerText = "⏸ PAUSE MUSIC"; }
+            else { music.pause(); document.getElementById("mBtn").innerText = "▶ PLAY MUSIC"; }
+        }
+
+        // MOTIVATION
         const quotes = [
             "අද කරන කැපවීම හෙට ඔබේ සාර්ථකත්වය තීරණය කරයි.",
             "අසීරුම කඳු මුදුන්වලට හොඳම දර්ශන උරුම වේ.",
-            "සාර්ථකත්වයේ රහස වන්නේ සාමාන්‍ය දේ අසාමාන්‍ය ලෙස කිරීමයි.",
-            "ඔබට කළ හැකැයි ඔබ විශ්වාස කරන්නේ නම්, ඔබ අඩක් ජයගෙන ඇත.",
-            "අසාර්ථකත්වය යනු නැවත බුද්ධිමත්ව ආරම්භ කිරීමට ඇති අවස්ථාවයි.",
-            "හීන දකින්න, ඒ වෙනුවෙන් වැඩ කරන්න, ඒවා සැබෑ කරගන්න.",
-            "වේදනාව තාවකාලිකයි, ජයග්‍රහණය සදාකාලිකයි.",
-            "නතර නොවන්න, ඔබ සිටින්නේ ජයග්‍රහණයට ඉතා ආසන්නව විය හැක.",
-            "ඔබේ උපරිමය අද කරන්න, හෙට දිනය ඔබට ස්තූති කරනු ඇත.",
+            "සාර්ථකත්වයේ රහස කැපවීමයි.",
             "විවේක ගන්න, නමුත් කිසිවිටෙකත් අත්නොහරින්න.",
-            "විනය යනු ඔබට අවශ්‍ය දේ සහ ඔබට වඩාත්ම අවශ්‍ය දේ අතර තේරීමයි.",
-            "කුඩා පියවර දිනක විශාල ගමනක ආරම්භය වේ.",
-            "දක්ෂතාවයට වඩා උත්සාහය ජයග්‍රහණයට මඟ පාදයි.",
-            "ඔබේ කාලය සීමිතයි, එය වෙනත් අයෙකුගේ ජීවිතයක් ජීවත් වීමට නාස්ති නොකරන්න.",
-            "ජයග්‍රහණය යනු පුරුද්දකි."
+            "ඔබට කළ නොහැකි දෙයක් නැත, ඔබ උත්සාහ කරන්නේ නම්.",
+            "වැටෙන වාරයක් පාසා ශක්තිමත්ව නැගිටින්න.",
+            "ඔබේ උපරිමය අද දවසේ ලබා දෙන්න.",
+            "සාර්ථක මිනිසුන් කිසිවිටෙකත් නිදහසට කරුණු නොකියයි.",
+            "නිහඬව වැඩ කරන්න, ඔබේ සාර්ථකත්වයට ශබ්ද කිරීමට ඉඩ දෙන්න.",
+            "නොනැවතී ඉදිරියටම යන්න."
         ];
         setInterval(() => {
-            document.getElementById("quote-text").style.opacity = 0;
+            const qText = document.getElementById("quote-text");
+            qText.style.opacity = 0;
             setTimeout(() => {
-                document.getElementById("quote-text").innerText = `"${quotes[Math.floor(Math.random()*quotes.length)]}"`;
-                document.getElementById("quote-text").style.opacity = 1;
+                qText.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+                qText.style.opacity = 1;
             }, 500);
-        }, 15000);
+        }, 30000);
 
-        // POMODORO
-        let time = 25 * 60, running = false, interval, mode = "Work";
+        // POMODORO AUTO-FLOW
+        let workTime = 25 * 60, breakTime = 5 * 60;
+        let currentTime = workTime, running = false, interval, isWork = true;
+
+        function updateDisplay() {
+            let m = Math.floor(currentTime / 60), s = currentTime % 60;
+            document.getElementById("timer-display").innerText = `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
+        }
+
         function toggleTimer() {
-            if(running) { clearInterval(interval); running = false; document.getElementById("start-btn").innerText = "RESUME"; }
+            if (running) { clearInterval(interval); running = false; document.getElementById("start-btn").innerText = "RESUME"; }
             else {
                 running = true; document.getElementById("start-btn").innerText = "PAUSE";
                 interval = setInterval(() => {
-                    time--;
-                    let m = Math.floor(time/60), s = time%60;
-                    document.getElementById("timer-display").innerText = `${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
-                    if(time <= 0) {
+                    currentTime--; updateDisplay();
+                    if (currentTime <= 0) {
                         clearInterval(interval); running = false;
-                        alert(mode === "Work" ? "Break Time!" : "Study Time!");
-                        mode = (mode === "Work") ? "Break" : "Work";
-                        time = (mode === "Work") ? 25*60 : 5*60;
-                        document.getElementById("status-text").innerText = mode.toUpperCase() + " MODE";
-                        toggleTimer();
+                        document.getElementById("alertSound").play();
+                        setTimeout(() => { document.getElementById("alertSound").play(); }, 1500);
+                        isWork = !isWork;
+                        currentTime = isWork ? workTime : breakTime;
+                        document.getElementById("status-text").innerText = isWork ? "WORK MODE" : "BREAK MODE";
+                        document.getElementById("status-text").className = isWork ? "status-work" : "status-break";
+                        setTimeout(() => { updateDisplay(); toggleTimer(); }, 3000);
                     }
                 }, 1000);
             }
         }
-        function resetTimer() { clearInterval(interval); running = false; time = 25*60; document.getElementById("timer-display").innerText = "25:00"; document.getElementById("start-btn").innerText = "START"; }
 
-        // TO-DO LIST
+        function resetTimer() { clearInterval(interval); running = false; isWork = true; currentTime = workTime; updateDisplay(); document.getElementById("status-text").innerText = "WORK MODE"; document.getElementById("start-btn").innerText = "START SESSION"; }
+
+        // TO-DO
         function addTask() {
-            let input = document.getElementById("taskInput");
-            if(!input.value) return;
-            let tasks = JSON.parse(localStorage.getItem("rash_tasks") || "[]");
-            tasks.push(input.value);
-            localStorage.setItem("rash_tasks", JSON.stringify(tasks));
-            input.value = ""; renderTasks();
+            let val = document.getElementById("taskInput").value; if(!val) return;
+            let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+            tasks.push(val); localStorage.setItem("tasks", JSON.stringify(tasks));
+            document.getElementById("taskInput").value = ""; renderTasks();
         }
         function renderTasks() {
-            let tasks = JSON.parse(localStorage.getItem("rash_tasks") || "[]");
-            document.getElementById("todoList").innerHTML = tasks.map((t, i) => `
-                <div class="todo-item"><span>✅ ${t}</span><button style="border:none; background:none; color:#555; cursor:pointer;" onclick="delTask(${i})">✖</button></div>
-            `).join("");
+            let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+            document.getElementById("todoList").innerHTML = tasks.map((t, i) => `<div class="todo-item"><span>✅ ${t}</span><button style="background:none; border:none; color:#444; cursor:pointer;" onclick="delTask(${i})">✖</button></div>`).join("");
         }
         function delTask(i) {
-            let tasks = JSON.parse(localStorage.getItem("rash_tasks") || "[]");
-            tasks.splice(i, 1);
-            localStorage.setItem("rash_tasks", JSON.stringify(tasks));
+            let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+            tasks.splice(i, 1); localStorage.setItem("tasks", JSON.stringify(tasks));
             renderTasks();
         }
         renderTasks();
