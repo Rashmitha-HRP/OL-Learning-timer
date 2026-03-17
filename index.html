@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O/L 2026 Master Dashboard - Rashmitha EDITZ</title>
+    <title>O/L 2026 Master Dashboard - Rashmitha BEATS</title>
+    <script async src="https://tally.so/widgets/embed.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         
@@ -48,6 +49,7 @@
             padding: 25px;
             text-align: center;
             transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
         .card:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255, 62, 62, 0.1); }
 
@@ -94,9 +96,27 @@
         /* TO-DO */
         .todo-input-wrap { display: flex; gap: 10px; margin-bottom: 20px; }
         input { flex: 1; background: #0a0a0a; border: 1px solid #222; padding: 14px; border-radius: 12px; color: white; outline: none; }
-        .todo-item { background: rgba(255,255,255,0.02); padding: 12px; border-radius: 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #111; }
+        .todo-item { 
+            background: rgba(255,255,255,0.02); padding: 12px; border-radius: 12px; 
+            margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; 
+            border: 1px solid #111; cursor: pointer; transition: 0.3s;
+        }
+        .task-content { display: flex; flex-direction: column; text-align: left; flex: 1; }
+        .task-text { font-size: 1rem; color: #eee; transition: 0.3s; }
+        .task-time { font-size: 0.65rem; color: var(--red); margin-top: 4px; font-weight: bold; opacity: 0.7; }
+        .done .task-text { text-decoration: line-through; color: #444; }
+        .done { border-color: rgba(255, 62, 62, 0.3); background: rgba(255, 62, 62, 0.05); }
 
-        footer { margin-top: 60px; color: #333; font-weight: bold; font-size: 0.75rem; letter-spacing: 5px; }
+        /* TALLY FORM CONTAINER */
+        .tally-container {
+            border-radius: 18px;
+            overflow: hidden;
+            background: rgba(0,0,0,0.2);
+            margin-top: 10px;
+            min-height: 400px;
+        }
+
+        footer { margin-top: 60px; color: #333; font-weight: bold; font-size: 0.75rem; letter-spacing: 5px; padding-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -137,6 +157,22 @@
             </div>
         </div>
 
+        <div class="card" style="grid-row: span 2;">
+            <h2>Submit Study Tips & Notes to me</h2>
+            <div class="tally-container">
+                <iframe 
+                    data-tally-src="https://tally.so/embed/kdZRq6?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
+                    loading="lazy" 
+                    width="100%" 
+                    height="450" 
+                    frameborder="0" 
+                    marginheight="0" 
+                    marginwidth="0" 
+                    title="Study Notes Submission">
+                </iframe>
+            </div>
+        </div>
+
         <div class="card">
             <h2>Daily Motivation</h2>
             <div id="quote-text" style="font-size: 1.1rem; line-height: 1.6; color: #ddd; min-height: 85px; display: flex; align-items: center; justify-content: center;">"අද කරන කැපවීම හෙට ඔබේ සාර්ථකත්වය තීරණය කරයි."</div>
@@ -150,7 +186,7 @@
         </div>
 
         <div class="card">
-            <h2>Study Goals</h2>
+            <h2>Study Goals (Click to Check)</h2>
             <div class="todo-input-wrap">
                 <input type="text" id="taskInput" placeholder="Add a study goal...">
                 <button onclick="addTask()">ADD</button>
@@ -159,7 +195,7 @@
         </div>
     </div>
 
-    <footer>© Rashmitha EDITZ</footer>
+    <footer>© Rashmitha BEATS</footer>
 
     <script>
         // 1. CLOCK
@@ -200,48 +236,35 @@
         }
         function resetSW() { clearInterval(swInterval); swInterval = null; swElapsed = 0; document.getElementById("sw-display").innerText = "00:00:00"; document.getElementById("sw-btn").innerText = "START"; }
 
-        // 4. POMODORO (25 MINS)
+        // 4. POMODORO METHOD STUDY
         let timeLeft = 25 * 60, running = false, timerInterval;
         const alarm = document.getElementById("alertSound");
-
         function updateDisplay() {
-            let m = Math.floor(timeLeft / 60);
-            let s = timeLeft % 60;
+            let m = Math.floor(timeLeft / 60); let s = timeLeft % 60;
             document.getElementById("timer-display").innerText = `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
         }
-
         function playAlarmTwice() {
-            let count = 0;
-            alarm.play();
+            let count = 0; alarm.play();
             alarm.onended = function() {
                 count++;
-                if(count < 2) {
-                    setTimeout(() => { alarm.play(); }, 400); 
-                } else {
-                    setTimeout(() => { alert("Session Done! Time for a break."); resetTimer(); }, 500);
-                }
+                if(count < 2) { setTimeout(() => { alarm.play(); }, 400); }
+                else { setTimeout(() => { alert("Session Done! Take a break."); resetTimer(); }, 500); }
             };
         }
-
         function toggleTimer() {
             const btn = document.getElementById("start-btn");
             if (running) { clearInterval(timerInterval); running = false; btn.innerText = "RESUME"; }
             else {
                 running = true; btn.innerText = "PAUSE";
                 timerInterval = setInterval(() => {
-                    timeLeft--;
-                    updateDisplay();
-                    if (timeLeft <= 0) {
-                        clearInterval(timerInterval); running = false;
-                        btn.innerText = "START SESSION";
-                        playAlarmTwice();
-                    }
+                    timeLeft--; updateDisplay();
+                    if (timeLeft <= 0) { clearInterval(timerInterval); running = false; btn.innerText = "START SESSION"; playAlarmTwice(); }
                 }, 1000);
             }
         }
         function resetTimer() { clearInterval(timerInterval); running = false; timeLeft = 25 * 60; updateDisplay(); document.getElementById("start-btn").innerText = "START SESSION"; }
 
-        // 5. MOTIVATION MUSIC
+        // 5. MUSIC
         const tracks = [
             { name: "Phonk Killer - Rare", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" },
             { name: "Night Drift - Montagem", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" }
@@ -250,49 +273,47 @@
         const audio = document.getElementById("bgMusic");
         const mBtn = document.getElementById("mBtn");
         const info = document.getElementById("track-info");
-
         function toggleMusic() {
             if (audio.paused) {
                 if(!audio.src) audio.src = tracks[currentIdx].url;
-                audio.play();
-                mBtn.innerText = "⏸ STOP TRACK";
-                mBtn.classList.add("playing");
-                info.innerText = "NOW PLAYING: " + tracks[currentIdx].name;
+                audio.play(); mBtn.innerText = "⏸ STOP TRACK"; mBtn.classList.add("playing"); info.innerText = "NOW PLAYING: " + tracks[currentIdx].name;
             } else {
-                audio.pause();
-                mBtn.innerText = "▶ PLAY TRACK";
-                mBtn.classList.remove("playing");
-                info.innerText = "Track Paused";
+                audio.pause(); mBtn.innerText = "▶ PLAY TRACK"; mBtn.classList.remove("playing"); info.innerText = "Track Paused";
             }
         }
-        function nextTrack() {
-            currentIdx = (currentIdx + 1) % tracks.length;
-            audio.src = tracks[currentIdx].url;
-            audio.play();
-            mBtn.innerText = "⏸ STOP TRACK";
-            info.innerText = "NOW PLAYING: " + tracks[currentIdx].name;
-        }
+        function nextTrack() { currentIdx = (currentIdx + 1) % tracks.length; audio.src = tracks[currentIdx].url; audio.play(); info.innerText = "NOW PLAYING: " + tracks[currentIdx].name; }
 
         // 6. GOALS & QUOTES
         const quotes = ["අද කරන කැපවීම හෙට ඔබේ සාර්ථකත්වය තීරණය කරයි.", "අසීරුම කඳු මුදුන්වලට හොඳම දර්ශන උරුම වේ.", "සාර්ථකත්වයේ රහස කැපවීමයි.", "නිහඬව වැඩ කරන්න, ඔබේ සාර්ථකත්වයට ශබ්ද කිරීමට ඉඩ දෙන්න."];
-        setInterval(() => {
-            document.getElementById("quote-text").innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
-        }, 30000);
+        setInterval(() => { document.getElementById("quote-text").innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`; }, 30000);
 
         function addTask() {
             let val = document.getElementById("taskInput").value; if(!val) return;
-            let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-            tasks.push(val); localStorage.setItem("tasks", JSON.stringify(tasks));
+            let tasks = JSON.parse(localStorage.getItem("tasks_new") || "[]");
+            tasks.push({ text: val, completed: false, doneTime: "" });
+            localStorage.setItem("tasks_new", JSON.stringify(tasks));
             document.getElementById("taskInput").value = ""; renderTasks();
         }
-        function renderTasks() {
-            let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-            document.getElementById("todoList").innerHTML = tasks.map((t, i) => `<div class="todo-item"><span>✅ ${t}</span><button style="background:none; border:none; color:#444; cursor:pointer;" onclick="delTask(${i})">✖</button></div>`).join("");
+        function toggleTask(i) {
+            let tasks = JSON.parse(localStorage.getItem("tasks_new") || "[]");
+            tasks[i].completed = !tasks[i].completed;
+            if(tasks[i].completed) {
+                let now = new Date(); tasks[i].doneTime = "Completed at " + now.getHours() + ":" + (now.getMinutes()<10?'0':'') + now.getMinutes();
+            } else { tasks[i].doneTime = ""; }
+            localStorage.setItem("tasks_new", JSON.stringify(tasks)); renderTasks();
         }
-        function delTask(i) {
-            let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-            tasks.splice(i, 1); localStorage.setItem("tasks", JSON.stringify(tasks));
-            renderTasks();
+        function delTask(e, i) { e.stopPropagation(); let tasks = JSON.parse(localStorage.getItem("tasks_new") || "[]"); tasks.splice(i, 1); localStorage.setItem("tasks_new", JSON.stringify(tasks)); renderTasks(); }
+        function renderTasks() {
+            let tasks = JSON.parse(localStorage.getItem("tasks_new") || "[]");
+            document.getElementById("todoList").innerHTML = tasks.map((t, i) => `
+                <div class="todo-item ${t.completed ? 'done' : ''}" onclick="toggleTask(${i})">
+                    <div class="task-content">
+                        <span class="task-text">${t.completed ? '✅' : '🎯'} ${t.text}</span>
+                        ${t.doneTime ? `<span class="task-time">${t.doneTime}</span>` : ''}
+                    </div>
+                    <button style="background:none; border:none; color:#444; cursor:pointer;" onclick="delTask(event, ${i})">✖</button>
+                </div>
+            `).join("");
         }
         renderTasks();
     </script>
